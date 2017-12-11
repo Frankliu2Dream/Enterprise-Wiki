@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.temp.KnowledgeTagVecMapper">
+
+
+	<resultMap type="com.mybatis.bean.temp.KnowledgeTagVec" id="KnowledgeTagVec">
+		<id column="tid" jdbcType="VARCHAR" property="tid"/>
+		<collection property="tags" jdbcType="DOUBLE" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.mybatis.bean.temp.KnowledgeTagVec">
+		insert into
+		wiki_crawl.knowledgetagvec
+		values
+		(#{tid},
+		<foreach collection="tags" index="index" item="item"
+			separator=",">
+			#{item}
+		</foreach>
+		)
+	</insert>
+	
+	<select id="getAllIds" resultType="String">
+		select 
+		tid
+		from 
+		wiki_crawl.knowledgetagvec
+	</select>
+</mapper>

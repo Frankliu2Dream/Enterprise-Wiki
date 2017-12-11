@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.crawl.NewsMapper_baidu">
+
+	<select id="findAbbr" parameterType="String" resultType="String">
+		select
+		id from
+		wiki_crawl.baidunews
+		where
+		company_name=#{COMPANY_ABBR}
+	</select>
+	<select id="findIncrementedIds" resultType="String">
+		select id from 
+		wiki_crawl.baidunews	
+		where id not in
+		(select tid from knowledgetagvec_new)
+	</select>
+	<select id="findAllIds" resultType="String">
+		select id from wiki_crawl.baidunews
+		where
+		1=1
+	</select>
+
+	<select id="findById" parameterType="String" resultType="com.mybatis.bean.crawl.News">
+		select * from
+		wiki_crawl.baidunews
+		where
+		id=#{id}
+	</select>
+
+	<select id="findRandNews" parameterType="Integer" resultType="String">
+		select id from
+		wiki_crawl.baidunews t1
+		JOIN (SELECT RAND()*10 AS nid) t2 ON t1.id > t2.nid
+		LIMIT #{limit_num}
+	</select>
+
+	<select id="findByIdList" resultType="com.mybatis.bean.crawl.News">
+		<foreach collection="list" item="id" separator="union all">
+			SELECT * from
+			wiki_crawl.baidunews
+			WHERE id = #{id}
+		</foreach>
+	</select>
+
+	<select id="findByIdArray" resultType="com.mybatis.bean.crawl.News">
+		<foreach collection="array" item="id" separator="union all">
+			SELECT * from
+			wiki_crawl.baidunews
+			WHERE id =#{id}
+		</foreach>
+	</select>
+	
+	<select id="findByCompanyName" parameterType="String" resultType="String">
+		select id from
+		wiki_crawl.baidunews
+		where 
+		company_name=#{company_name}
+	</select>
+	
+	<select id="findCompanyName" parameterType="String" resultType="String">
+		select company_name from
+		wiki_crawl.baidunews
+		where 
+		id=#{id}
+	</select>
+	
+	
+	
+</mapper>
